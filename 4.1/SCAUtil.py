@@ -81,5 +81,33 @@ def pearson(X: np.ndarray, Y: np.ndarray):
     r = sum_XY / (r_X * r_Y)
     return r
 
+# matrix version
+# slightly modified by xiaolin
+def pearsonm(X: np.ndarray, Y: np.ndarray):
+    if X.shape[0] != Y.shape[0]:
+        print("X and Y have wrong dimension")
+        return
+    # X: N*K, Y:N*M
+    mean_X = X.mean(axis=0)  # 1 * K
+    #print(mean_X.shape)
+    mean_Y = Y.mean(axis=0)  # 1 * M
+    #print(mean_Y.shape)
+
+    XX = X - mean_X # N * K
+    #print(XX.shape)
+
+    YY = Y - mean_Y # N * M
+    #print(YY.shape)
+
+    r_X = np.array([np.sqrt(np.sum(np.square(XX), axis=0))]) # 1 * K vectorize
+    #print(r_X.shape)
+
+    r_Y = np.array([np.sqrt(np.sum(np.square(YY), axis=0))]) # 1 * M vectorize
+    #print(r_Y.shape)
+    sum_XY = np.matmul(XX.T, YY)
+    #print(sum_XY.shape)
+    r = sum_XY / (r_X.T * r_Y)
+    return r
+
 def correlation(x, y):
     return np.abs(pearson(x, y))
